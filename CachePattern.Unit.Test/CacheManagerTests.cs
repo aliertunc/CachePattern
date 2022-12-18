@@ -1,5 +1,5 @@
-﻿ 
-using Microsoft.Extensions.Caching.Memory; 
+﻿
+using Microsoft.Extensions.Caching.Memory;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -9,9 +9,13 @@ namespace CachePattern.Unit.Test
     public class CacheManagerTests
     {
         private readonly IMemoryCache _cache;
+        CacheManager.CacheManager manager;
+
+
         public CacheManagerTests()
         {
             _cache = new MemoryCache(new MemoryCacheOptions());
+            manager = new CacheManager.CacheManager(_cache);
         }
         [Fact]
         public void AddCacheTest()
@@ -29,7 +33,6 @@ namespace CachePattern.Unit.Test
         [Fact]
         public async Task AddCacheTestAsync()
         {
-            CacheManager.CacheManager manager = new CacheManager.CacheManager(_cache);
             string keyName = "theKeyName";
             string keyValue = "theKeyValue";
 
@@ -42,8 +45,7 @@ namespace CachePattern.Unit.Test
 
         [Fact]
         public void RemoveCacheTest()
-        {
-            CacheManager.CacheManager manager = new CacheManager.CacheManager(_cache);
+        { 
             string keyName = "theKeyName";
             string keyValue = "theKeyValue";
 
@@ -58,13 +60,12 @@ namespace CachePattern.Unit.Test
         }
         [Fact]
         public async Task GetCacheAsyncTest()
-        {
-            CacheManager.CacheManager manager = new CacheManager.CacheManager(_cache);
+        { 
             string keyName = "theKeyName";
             string keyValue = "theKeyValue";
 
             manager.AddCache(keyName, keyValue, 5);
-           var cacheValue=  await manager.GetCacheAsync(keyName);
+            var cacheValue = await manager.GetCacheAsync(keyName);
 
             Assert.NotNull(cacheValue);
             Assert.Equal(keyValue, cacheValue);
@@ -72,14 +73,13 @@ namespace CachePattern.Unit.Test
 
         [Fact]
         public void GetTestAfterExpire()
-        {
-            CacheManager.CacheManager manager = new CacheManager.CacheManager(_cache);
+        { 
             string keyName = "theKeyName";
             string keyValue = "theKeyValue";
 
             manager.AddCache(keyName, keyValue, 5);
             var cacheValue = manager.GetCache(keyName);
-            Thread.Sleep(5000); 
+            Thread.Sleep(5000);
             var cacheValueExpired = manager.GetCache(keyName);
 
             Assert.Null(cacheValueExpired);
