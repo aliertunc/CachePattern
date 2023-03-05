@@ -50,18 +50,14 @@ namespace CacheManager
             object value = null;
             await Task.Run(() =>
             {
-                if (_cache.TryGetValue(key, out value))
+                if (!_cache.TryGetValue(key, out value))
                 {
-                    return value;
-                }
-                else
-                { 
-                    return value;
+                    throw new ArgumentException("Value not found in cache.", nameof(key));
                 }
             });
 
             return value;
         }
-
+         
     }
 }

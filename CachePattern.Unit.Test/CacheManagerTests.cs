@@ -9,7 +9,7 @@ namespace CachePattern.Unit.Test
     public class CacheManagerTests
     {
         private readonly IMemoryCache _cache;
-        CacheManager.CacheManager manager;
+        readonly CacheManager.CacheManager manager;
 
 
         public CacheManagerTests()
@@ -20,12 +20,13 @@ namespace CachePattern.Unit.Test
         [Fact]
         public void AddCacheTest()
         {
-            CacheManager.CacheManager manager = new CacheManager.CacheManager(_cache);
+            CacheManager.CacheManager cacheManager = new CacheManager.CacheManager(_cache); 
+
             string keyName = "theKeyName";
             string keyValue = "theKeyValue";
 
-            manager.AddCache(keyName, keyValue, 5);
-            var cacheValue = manager.GetCache(keyName);
+            cacheManager.AddCache(keyName, keyValue, 5);
+            var cacheValue = cacheManager.GetCache(keyName);
 
             Assert.NotNull(cacheValue);
             Assert.Equal(keyValue, cacheValue);
